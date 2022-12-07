@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "421995168663",
+    "project_id": "ams-usama-project",
+    "storage_bucket": "ams-usama-project.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:421995168663:android:a7be6f0856a053590afad2",
+        "android_client_info": {
+          "package_name": "com.example.attendance_management_system"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "421995168663-be7rqf0gtav7rps4vebfhl9g2d5rsi4u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBecBon7-6agYDEuVahe1kuPyEpH6soevU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "421995168663-be7rqf0gtav7rps4vebfhl9g2d5rsi4u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
