@@ -23,6 +23,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return _buildBody(context);
+  }
+
+  Widget _buildBody(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Padding(
@@ -33,99 +37,123 @@ class _SignUpScreenState extends State<SignUpScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text(
-                'SignUp',
-                style: TextStyle(
-                  fontSize: 36.0,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                ),
-              ),
+              _buildSignUpText(),
               const SizedBox(height: 36.0),
-              TextFormField(
-                controller: _nameController,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: 'name',
-                ),
-                validator: (value) {
-                  if (value != null && value.isNotEmpty) {
-                    return null;
-                  }
-                  return 'Please fill name properly';
-                },
-              ),
+              _buildNameTextField(),
               const SizedBox(height: 16.0),
-              TextFormField(
-                controller: _emailController,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: 'email',
-                ),
-                validator: (value) {
-                  if (value != null && value.isNotEmpty) {
-                    return null;
-                  }
-                  return 'Please fill email properly';
-                },
-              ),
+              _buildEmailTextField(),
               const SizedBox(height: 16.0),
-              TextFormField(
-                controller: _passwordController,
-                obscureText: true,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: 'password',
-                ),
-                validator: (value) {
-                  if (value != null && value.isNotEmpty) {
-                    return null;
-                  }
-                  return 'Please fill password properly';
-                },
-              ),
+              _buildPasswordTextField(),
               const SizedBox(height: 16.0),
-              SizedBox(
-                width: 150,
-                child: DropdownButton(
-                  isExpanded: true,
-                  value: selectedValue,
-                  items: const [
-                    DropdownMenuItem(
-                      value: 'User',
-                      child: Text('User'),
-                    ),
-                    DropdownMenuItem(
-                      value: 'Admin',
-                      child: Text('Admin'),
-                    ),
-                  ],
-                  onChanged: (value) {
-                    if (value != null && value.isNotEmpty) {
-                      setState(() => selectedValue = value);
-                    }
-                  },
-                ),
-              ),
+              _buildAccountTypeDropDown(),
               const SizedBox(height: 16.0),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () {
-                    if (_signUpFormKey.currentState!.validate()) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Login'),
-                        ),
-                      );
-                    }
-                  },
-                  child: const Text('SignUp'),
-                ),
-              ),
+              _buildSignUpButton(context),
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildSignUpText() {
+    return const Text(
+      'SignUp',
+      style: TextStyle(
+        fontSize: 36.0,
+        fontWeight: FontWeight.bold,
+        color: Colors.black,
+      ),
+    );
+  }
+
+  Widget _buildNameTextField() {
+    return TextFormField(
+      controller: _nameController,
+      decoration: const InputDecoration(
+        border: OutlineInputBorder(),
+        hintText: 'name',
+      ),
+      validator: (value) {
+        if (value != null && value.isNotEmpty) {
+          return null;
+        }
+        return 'Please fill name properly';
+      },
+    );
+  }
+
+  Widget _buildEmailTextField() {
+    return TextFormField(
+      controller: _emailController,
+      decoration: const InputDecoration(
+        border: OutlineInputBorder(),
+        hintText: 'email',
+      ),
+      validator: (value) {
+        if (value != null && value.isNotEmpty) {
+          return null;
+        }
+        return 'Please fill email properly';
+      },
+    );
+  }
+
+  Widget _buildPasswordTextField() {
+    return TextFormField(
+      controller: _passwordController,
+      obscureText: true,
+      decoration: const InputDecoration(
+        border: OutlineInputBorder(),
+        hintText: 'password',
+      ),
+      validator: (value) {
+        if (value != null && value.isNotEmpty) {
+          return null;
+        }
+        return 'Please fill password properly';
+      },
+    );
+  }
+
+  Widget _buildAccountTypeDropDown() {
+    return SizedBox(
+      width: 150,
+      child: DropdownButton(
+        isExpanded: true,
+        value: selectedValue,
+        items: const [
+          DropdownMenuItem(
+            value: 'User',
+            child: Text('User'),
+          ),
+          DropdownMenuItem(
+            value: 'Admin',
+            child: Text('Admin'),
+          ),
+        ],
+        onChanged: (value) {
+          if (value != null && value.isNotEmpty) {
+            setState(() => selectedValue = value);
+          }
+        },
+      ),
+    );
+  }
+
+  Widget _buildSignUpButton(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      child: ElevatedButton(
+        onPressed: () {
+          if (_signUpFormKey.currentState!.validate()) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('SignUp'),
+              ),
+            );
+          }
+        },
+        child: const Text('SignUp'),
       ),
     );
   }
