@@ -1,4 +1,6 @@
+import 'package:attendance_management_system/screens/auth/sign_in.dart';
 import 'package:attendance_management_system/screens/user/dashboard/user_dashboard.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'firebase_options.dart';
@@ -21,7 +23,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),
-      home: const UserDashboardScreen(),
+      home: FirebaseAuth.instance.currentUser != null
+          ? const UserDashboardScreen()
+          : const SignInScreen(),
     );
   }
 }

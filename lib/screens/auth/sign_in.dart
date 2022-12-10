@@ -1,3 +1,6 @@
+import 'package:attendance_management_system/screens/auth/sign_up.dart';
+import 'package:attendance_management_system/screens/user/dashboard/user_dashboard.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class SignInScreen extends StatefulWidget {
@@ -127,13 +130,31 @@ class _SignInScreenState extends State<SignInScreen> {
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton(
-        onPressed: () {
+        onPressed: () async {
           if (_loginFormKey.currentState!.validate()) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Login'),
-              ),
+            final String email = _emailController.text;
+            final String password = _passwordController.text;
+
+            UserCredential userCredential =
+                await FirebaseAuth.instance.signInWithEmailAndPassword(
+              email: email,
+              password: password,
             );
+
+            if (userCredential.user != null) {
+              if (!mounted) return;
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Logging In'),
+                ),
+              );
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const UserDashboardScreen(),
+                ),
+              );
+            }
           }
         },
         child: const Text('Login'),
@@ -149,7 +170,14 @@ class _SignInScreenState extends State<SignInScreen> {
           "Don't have an account. ",
         ),
         TextButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => const SignUpScreen(),
+              ),
+            );
+          },
           child: const Text('Sign Up'),
         )
       ],
