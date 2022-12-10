@@ -177,12 +177,13 @@ class _UserDashboardScreenState extends State<UserDashboardScreen> {
       AttendanceModel model = AttendanceModel.fromMap(
         querySnapshot.docs[0].data(),
       );
-
-      isDayPassed = model.dateAndTime.hour > 23 &&
-          model.dateAndTime.minute > 59 &&
-          model.dateAndTime.second > 59;
-
-      setState(() {});
+      isDayPassed = (model.dateAndTime.hour > 23 &&
+              model.dateAndTime.minute > 59 &&
+              model.dateAndTime.second > 59) ||
+          (model.dateAndTime.day < DateTime.now().day);
+    } else {
+      isDayPassed = true;
     }
+    setState(() {});
   }
 }
