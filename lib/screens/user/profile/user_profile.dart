@@ -1,6 +1,6 @@
-import 'package:attendance_management_system/screens/auth/sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import '../../auth/sign_in.dart';
 
 class UserProfileScreen extends StatelessWidget {
   const UserProfileScreen({super.key});
