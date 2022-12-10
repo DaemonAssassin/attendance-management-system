@@ -1,6 +1,9 @@
-import 'package:attendance_management_system/screens/user/profile/user_profile.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import '../../../models/attendance_model.dart';
 import '../attendance_report/attendance_report.dart';
+import '../profile/user_profile.dart';
 
 class UserDashboardScreen extends StatefulWidget {
   const UserDashboardScreen({super.key});
@@ -12,6 +15,13 @@ class UserDashboardScreen extends StatefulWidget {
 class _UserDashboardScreenState extends State<UserDashboardScreen> {
   late Size _size;
   String _attendanceStatus = '';
+  bool? isDayPassed;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkDayPassed();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,9 +64,22 @@ class _UserDashboardScreenState extends State<UserDashboardScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          _buildPresentButton(context),
-          const SizedBox(height: 8.0),
-          _buildLeaveButton(context),
+          isDayPassed != null
+              ? Column(
+                  children: [
+                    _buildPresentButton(context),
+                    const SizedBox(height: 8.0),
+                    _buildLeaveButton(context),
+                  ],
+                )
+              : const Text(
+                  'Checking Attendance...',
+                  style: TextStyle(
+                    fontSize: 24.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                ),
           const SizedBox(height: 8.0),
           _buildViewAttendanceButton(context),
         ],
@@ -68,10 +91,11 @@ class _UserDashboardScreenState extends State<UserDashboardScreen> {
     return SizedBox(
       width: _size.width * 0.6,
       child: ElevatedButton(
-        onPressed: _attendanceStatus.isNotEmpty
+        onPressed: !isDayPassed! || _attendanceStatus.isNotEmpty
             ? null
             : () {
                 setState(() => _attendanceStatus = 'P');
+                _markAttendance();
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
                     content: Text('You Marked Present'),
@@ -88,10 +112,11 @@ class _UserDashboardScreenState extends State<UserDashboardScreen> {
       width: _size.width * 0.6,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
-        onPressed: _attendanceStatus.isNotEmpty
+        onPressed: !isDayPassed! || _attendanceStatus.isNotEmpty
             ? null
             : () {
                 setState(() => _attendanceStatus = 'L');
+                _markAttendance();
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
                     content: Text('You Requested Leave'),
@@ -118,5 +143,46 @@ class _UserDashboardScreenState extends State<UserDashboardScreen> {
       },
       child: const Text('View Attendance'),
     );
+  }
+
+  /// mark attendance (present or leave)
+  void _markAttendance() async {
+    final DateTime dateTime = DateTime.now();
+    final String attendanceStatus =
+        _attendanceStatus == 'P' ? 'Present' : 'Leave Pending..';
+
+    AttendanceModel attendanceModel = AttendanceModel(
+      attendanceStatus: attendanceStatus,
+      dateAndTime: dateTime,
+    );
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection('attendance')
+        .doc(
+            '${DateTime.now().millisecondsSinceEpoch}_${dateTime.year}-${dateTime.month}')
+        .set(attendanceModel.toMap());
+  }
+
+  // check whether the day has been passed (24 hours completed)
+  void _checkDayPassed() async {
+    final querySnapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection('attendance')
+        .orderBy('dateAndTime')
+        .get();
+
+    if (querySnapshot.docs.isNotEmpty) {
+      AttendanceModel model = AttendanceModel.fromMap(
+        querySnapshot.docs[0].data(),
+      );
+
+      isDayPassed = model.dateAndTime.hour > 23 &&
+          model.dateAndTime.minute > 59 &&
+          model.dateAndTime.second > 59;
+
+      setState(() {});
+    }
   }
 }

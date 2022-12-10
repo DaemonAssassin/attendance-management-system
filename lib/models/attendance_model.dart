@@ -1,5 +1,5 @@
-class ClassName {
-  ClassName({
+class AttendanceModel {
+  AttendanceModel({
     required this.dateAndTime,
     required this.attendanceStatus,
   });
@@ -14,8 +14,8 @@ class ClassName {
     };
   }
 
-  factory ClassName.fromMap(Map<String, dynamic> map) {
-    return ClassName(
+  factory AttendanceModel.fromMap(Map<String, dynamic> map) {
+    return AttendanceModel(
       dateAndTime:
           DateTime.fromMillisecondsSinceEpoch(map['dateAndTime'] as int),
       attendanceStatus: map['attendanceStatus'] as String,
