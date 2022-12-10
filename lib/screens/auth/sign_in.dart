@@ -45,6 +45,8 @@ class _SignInScreenState extends State<SignInScreen> {
               _buildAccountTypeDropDown(),
               const SizedBox(height: 16.0),
               _buildLoginButton(context),
+              const SizedBox(height: 36.0),
+              _buildDoNotHaveAnAccount(),
             ],
           ),
         ),
@@ -136,6 +138,21 @@ class _SignInScreenState extends State<SignInScreen> {
         },
         child: const Text('Login'),
       ),
+    );
+  }
+
+  Widget _buildDoNotHaveAnAccount() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Text(
+          "Don't have an account. ",
+        ),
+        TextButton(
+          onPressed: () {},
+          child: const Text('Sign Up'),
+        )
+      ],
     );
   }
 }

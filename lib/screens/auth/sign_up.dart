@@ -48,6 +48,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
               _buildAccountTypeDropDown(),
               const SizedBox(height: 16.0),
               _buildSignUpButton(context),
+              const SizedBox(height: 36.0),
+              _buildAlreadyHaveAccount()
             ],
           ),
         ),
@@ -148,13 +150,28 @@ class _SignUpScreenState extends State<SignUpScreen> {
           if (_signUpFormKey.currentState!.validate()) {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
-                content: Text('SignUp'),
+                content: Text('SignUp Successful'),
               ),
             );
           }
         },
         child: const Text('SignUp'),
       ),
+    );
+  }
+
+  Widget _buildAlreadyHaveAccount() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Text(
+          "Already have an account",
+        ),
+        TextButton(
+          onPressed: () {},
+          child: const Text('Sign In'),
+        )
+      ],
     );
   }
 }
