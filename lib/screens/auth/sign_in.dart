@@ -148,7 +148,8 @@ class _SignInScreenState extends State<SignInScreen> {
                   content: Text('Logging In'),
                 ),
               );
-              Navigator.push(
+              Navigator.popUntil(context, (route) => route.isFirst);
+              Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                   builder: (_) => const UserDashboardScreen(),

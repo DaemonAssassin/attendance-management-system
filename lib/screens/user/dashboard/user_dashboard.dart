@@ -1,3 +1,4 @@
+import 'package:attendance_management_system/screens/user/profile/user_profile.dart';
 import 'package:flutter/material.dart';
 import '../attendance_report/attendance_report.dart';
 
@@ -22,7 +23,14 @@ class _UserDashboardScreenState extends State<UserDashboardScreen> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: InkWell(
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const UserProfileScreen(),
+                  ),
+                );
+              },
               child: const CircleAvatar(
                 backgroundImage: NetworkImage(
                   'https://images.pexels.com/photos/3584924/pexels-photo-3584924.jpeg?auto=compress&cs=tinysrgb&w=600',

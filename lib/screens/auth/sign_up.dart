@@ -260,23 +260,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
         password: password,
       );
 
-      // creating model
-      UserOrAdmin userOrAdmin = UserOrAdmin(
-        name: name,
-        image: imageUrl,
-        email: email,
-        password: password,
-        accountType: _selectedAccountType,
-      );
-
-      // creating doc of user / admin in firestore
-      FirebaseFirestore.instance
-          .collection(_selectedAccountType == 'User' ? 'users' : 'admins')
-          .doc()
-          .set(userOrAdmin.toMap());
-
       if (!mounted) return;
       if (credential.user != null) {
+        // creating model
+        UserOrAdmin userOrAdmin = UserOrAdmin(
+          name: name,
+          image: imageUrl,
+          email: email,
+          password: password,
+          accountType: _selectedAccountType,
+        );
+
+        // creating doc of user / admin in firestore
+        FirebaseFirestore.instance
+            .collection(_selectedAccountType == 'User' ? 'users' : 'admins')
+            .doc(credential.user!.uid)
+            .set(userOrAdmin.toMap());
+
         setState(() => _isLoading = false);
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
